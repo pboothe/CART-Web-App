@@ -17,7 +17,7 @@ session_start();
 <div id="wrapper" style="width:327px;">
   <div id="top">
     <div id="links">
-    <a href="protected.php">back</a>
+    <a href="index.php">back</a>
     </div>
   </div>
  
@@ -32,7 +32,7 @@ error_reporting(E_ALL);
 @$loggedInAs = $_SESSION['loggedInAs'];
 
 //allow only admin access
-if( $loggedInAs == "admin" ) {
+//if( $loggedInAs == "admin" ) {
 
 //collect input username 
 @$user = $_POST['user'];
@@ -94,10 +94,10 @@ else
 </table>
 </form>
 
-<?php } }
+<?php }// }
 //if user is not 'admin'
-else echo "You must be the administrator to view this page";
-?>
+//else echo "You must be the administrator to view this page";
+//?>
 
 </div><!--close holder-->
 </div><!--close content-->
