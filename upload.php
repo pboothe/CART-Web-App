@@ -42,10 +42,10 @@ $target = "uploaded_spreadsheets/". basename( $_FILES['uploaded']['name']);
 * @link includes/phpExcel/Classes/PHPExcel/IOFactory.php
 */
 require_once('includes/phpExcel/Classes/PHPExcel/IOFactory.php');
-include 'includes/minegrades.php';
 
 $COG = $_REQUEST['cutoff_grade'];
 $COP = $_REQUEST['cutoff_prob'];
+$ALG = $_REQUEST['algo'];
 $uploaded_type = $_FILES['uploaded']['type'];
 
 //Error check if the document uploaded is indeed
@@ -66,6 +66,7 @@ else{
                 echo "<i>".$_FILES['uploaded']['name']."</i><br>";
                 echo "Cutoff-grade = ".$_REQUEST['cutoff_grade']."<br>"; 
                 echo "Cutoff-probability = ".$_REQUEST['cutoff_prob']."<br>";
+                echo "Algorithm = ".$_REQUEST['algo']."<br>";
                 echo "</small>";
         }
         else
@@ -138,8 +139,15 @@ for($row = $startRow; $row < $highestRow; $row++)
 }
 
 //Boothe-ian Magic Occurs, returns a binary tree of CART data
-$stats = mineGrades($COG, $COP, $answerKey, $studentAns);
+if ($ALG == "old"){
+	include 'includes/minegrades.php';
+} elseif ($ALG == "new"){
+	include 'includes/minegrades2.php';
+}else{
+	echo "<small>Invalid algorithm chosen</small>";
+}
 
+$stats = mineGrades($COG, $COP, $answerKey, $studentAns);
 
 //printAllNodes returns an array with a simple listing of all nodes
 //this is required for DOT

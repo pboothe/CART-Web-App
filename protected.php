@@ -46,6 +46,15 @@ if(isset($_SESSION['loggedInAs']))
 </tr>
 <tr><td>cutoff-grade:</td><td><input type="text" size="10" name="cutoff_grade"/></td></tr>
 <tr><td>cutoff-probability:</td><td><input type="text" size="10" name="cutoff_prob"/></td></tr>
+<!-- New boothe algo changes start -->
+<tr>
+	<td>Which algorithm should be used?</td>
+	<td>
+		<input id="oldbutton" type="radio" name="algo" value="old" /> Old Algorithm <br/>
+		<input id="newbutton" type="radio" name="algo" value="new" checked="checked" /> New Algorithm
+	</td>
+</tr>
+<!-- End new boothe algo changes -->
 <tr><td></td><td><input type="submit" value="upload" class="go" /></td></tr>
 </table>
 </form>
