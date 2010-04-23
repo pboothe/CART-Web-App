@@ -66,6 +66,7 @@ else{
                 echo "<i>".$_FILES['uploaded']['name']."</i><br>";
                 echo "Cutoff-grade = ".$_REQUEST['cutoff_grade']."<br>"; 
                 echo "Cutoff-probability = ".$_REQUEST['cutoff_prob']."<br>";
+		echo "Algorithm used = ".$_REQUEST['algo']."<br>";
                 echo "</small>";
         }
         else
