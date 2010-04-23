@@ -42,7 +42,6 @@ $target = "uploaded_spreadsheets/". basename( $_FILES['uploaded']['name']);
 * @link includes/phpExcel/Classes/PHPExcel/IOFactory.php
 */
 require_once('includes/phpExcel/Classes/PHPExcel/IOFactory.php');
-include 'includes/minegrades.php';
 
 $COG = $_REQUEST['cutoff_grade'];
 $COP = $_REQUEST['cutoff_prob'];
