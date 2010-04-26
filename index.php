@@ -14,12 +14,6 @@ session_start();
 </script>
 <script type="text/javaScript">
 function requestAccess() {
-  // var email = prompt("Please enter your email address");
-  // if (email!=null && email!="") {
-   //   sendRequest(email); 
-//<?php echo "<a href='createLogin.php'>add users</a> | "; ?>
-//<a href="javascript:void(0);" onClick="requestAccess()">request access</a>
- // }
 }
 </script>
 </head>

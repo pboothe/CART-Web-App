@@ -94,10 +94,10 @@ else
 </table>
 </form>
 
-<?php }// }
-//if user is not 'admin'
-//else echo "You must be the administrator to view this page";
-//?>
+<?php }
+
+
+?>
 
 </div><!--close holder-->
 </div><!--close content-->

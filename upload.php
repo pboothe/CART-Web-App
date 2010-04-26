@@ -42,10 +42,10 @@ $target = "uploaded_spreadsheets/". basename( $_FILES['uploaded']['name']);
 * @link includes/phpExcel/Classes/PHPExcel/IOFactory.php
 */
 require_once('includes/phpExcel/Classes/PHPExcel/IOFactory.php');
-include 'includes/minegrades.php';
 
 $COG = $_REQUEST['cutoff_grade'];
 $COP = $_REQUEST['cutoff_prob'];
+$ALG = $_REQUEST['algo'];
 $uploaded_type = $_FILES['uploaded']['type'];
 
 //Error check if the document uploaded is indeed
@@ -66,6 +66,7 @@ else{
                 echo "<i>".$_FILES['uploaded']['name']."</i><br>";
                 echo "Cutoff-grade = ".$_REQUEST['cutoff_grade']."<br>"; 
                 echo "Cutoff-probability = ".$_REQUEST['cutoff_prob']."<br>";
+		echo "Algorithm used = ".$_REQUEST['algo']."<br>";
                 echo "</small>";
         }
         else
@@ -138,6 +139,14 @@ for($row = $startRow; $row < $highestRow; $row++)
 }
 
 //Boothe-ian Magic Occurs, returns a binary tree of CART data
+if ($ALG == "old"){
+	include 'includes/minegrades.php';
+} elseif ($ALG == "new"){
+	include 'includes/minegrades2.php';
+}else{
+	echo "<small>Invalid algorithm chosen</small>";
+}
+
 $stats = mineGrades($COG, $COP, $answerKey, $studentAns);
 
 
@@ -149,9 +158,11 @@ $test = $stats->printAllNodes();
 //dependence. this is also required for DOT.
 $final = $stats->printDOT();
 
-
-//Create a DOT file in the saved_pngs directory and check to make sure it can be opened
-$DotFile = "saved_pngs/process.dot";
+//Andres A.K.A BowlofRice edits begin below
+//Create a randomly namedDOT file in the saved_pngs directory //and check to make sure it can be opened
+$Timestamp=time();
+$tempdotfile=$Timestamp."process.dot";
+$DotFile = "saved_pngs/".$tempdotfile;
 $fh = fopen($DotFile, 'w') or die("can't open file");
 
 
@@ -184,15 +195,17 @@ fclose($fh);
 
 
 //create the image file
-$createPng = "dot saved_pngs/process.dot -T png -o saved_pngs/output.png";
+$Timestamp=time();
+$temppngfile=$Timestamp."output.png";
+$createPng = "dot saved_pngs/".$tempdotfile." -T png -o saved_pngs/".$temppngfile;
 system($createPng);
 
 //remove xls and dot files
-if(file_exists("saved_pngs/process.dot")) unlink("saved_pngs/process.dot");
+if(file_exists("saved_pngs/".$tempdotfile)) unlink("saved_pngs/".$tempdotfile);
 if(file_exists($target)) unlink($target);
 
 //index 0 is width, 1 is height, in pixels
-$imageSize = getimagesize("saved_pngs/output.png");
+$imageSize = getimagesize("saved_pngs/$temppngfile");
 $scaledWidth = floor($imageSize[0] / 5);
 $scaledHeight = floor($imageSize[1] / 5);
 
@@ -200,10 +213,10 @@ $scaledHeight = floor($imageSize[1] / 5);
 <br />
 <small>click image for full-size</small>
 <br />
-<a href="saved_pngs/output.png" target="_blank">
-<img src="saved_pngs/output.png" style="width:<?php echo $scaledWidth; ?>px; height:<?php echo $scaledHeight; ?>px; border:2px solid #cccccc" onMouseOver="this.style.border='2px solid #339999'" onMouseOut="this.style.border='2px solid #cccccc'" />
+<a href="saved_pngs/<?php echo $temppngfile; ?>" target="_blank">
+<img src="saved_pngs/<?php echo $temppngfile; ?>" style="width:<?php echo $scaledWidth; ?>px; height:<?php echo $scaledHeight; ?>px; border:2px solid #cccccc" onMouseOver="this.style.border='2px solid #339999'" onMouseOut="this.style.border='2px solid #cccccc'" />
 </a><br>
-
+<!--Andres A.K.A BowlofRice edits end here-->
 
 </div><!--close holder-->
 </div><!--close content-->
