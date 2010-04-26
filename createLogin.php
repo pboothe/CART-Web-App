@@ -42,7 +42,7 @@ error_reporting(E_ALL);
 if( (strlen($user) > 0) && (strlen($_POST['pass']) > 0) && 
           ($_POST['pass'] == $_POST['passcopy']) )
 {
-   $pass = sha1($_POST['pass']);
+   $pass = crypt($_POST['pass'], '$1$roflcopt$');
    $uniqueUser = true;
    $validUser = true;
 

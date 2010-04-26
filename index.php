@@ -59,7 +59,7 @@ if( isset($_SESSION['loggedInAs']) )
 if( isset($_POST['user']) && isset($_POST['pass']) )
 {
    $username = $_POST['user'];
-   $password = sha1($_POST['pass'])."\n";
+   $password = crypt($_POST['pass'], '$1$roflcopt$')."\n";
    $loginSuccess = false;
    $lines = file('accounts.txt');
    foreach ($lines as $line_num => $line) {
