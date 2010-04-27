@@ -17,3 +17,6 @@ blargedy::f38cfe2e2facbcc742bad63f91ad55637300cb45
 >>>>>>> e7770c4f764ecf8b17db2e8ec6e18e4fd38a1d12:accounts.txt
 ceichel::b2b01382a1e7a704a044a551afb464f9eab86142
 testaccount::$1$roflcopt$2prmuKafUvtig1B8MMNnC.
+lelouch::$1$roflcopt$porBtgDK3FWlZAbMGRG.t/
+kira::$1$roflcopt$KBpvlbLNS7kTV0ZaxPjus0
+gay::$1$roflcopt$j9q/U5fUNCw0Jt4hZma1t1

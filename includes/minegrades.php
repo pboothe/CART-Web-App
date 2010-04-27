@@ -13,10 +13,13 @@
 // This is the tree class for the root. Internal nodes inherit from this
 // type to disply different messages.
 
+$flag = 0;
+$next = 1;
+$old = 0;
 $AllNodesPrint = array();
 $DOTPrint = array();
 $numeroUno = 0;
-
+$work = 0;
 /**
 *Declared Class; houses variables
 *
@@ -38,6 +41,8 @@ class GradeDecisionTree
     // Generate and return the message that this tree node should display
     public function message()
     {
+	global $numeroUno;
+	//$counter = $counter+1;
         $total = count($this->students);
         $good = 0;
         $bad = 0;
@@ -48,11 +53,11 @@ class GradeDecisionTree
                 $bad++;
             }
         }
- 
+ 	
         $goodp = (int) (100*$good / $total);
         $badp = (int) (100*$bad / $total);
         return <<<EOT
-$total students total
+$total students total  
 $good students passed ($goodp%)
 $bad students failed ($badp%)
 EOT;
@@ -69,7 +74,7 @@ EOT;
         $statement = preg_replace("/\n/", "<br>" . $lead, $lead . $this->message());
         $holder = explode("<br>", $statement);
 	$toPrint[] = $holder;
- 
+  //      echo "$holder";
         if ($this->right != null) $this->right->printout($indent+2);
         if ($this->wrong != null) $this->wrong->printout($indent+2);
 
@@ -90,46 +95,78 @@ EOT;
         echo "</table>\n";
     }
 
-    public function printDOT()
+    public function printDOT($parent,$child)
     {
 	global $DOTPrint;
 	global $numeroUno;
-	if($numeroUno != 0)
+	global $next;
+
+	if($next >  1)
 	{
 		$statement = '"';
-	        $statement .= preg_replace("/\n/", '\n', $this->message());
+		$temp = $next - 1;
+		$statement .= "$temp ";
+		$parent = $temp;
+		$statement .= preg_replace("/\n/", '\n', $this->message());
 		$statement .= '";';
 		$DOTPrint [] = $statement;
 	}
-	$numeroUno++;
-        if ($this->right != null)
+	//$numeroUno++;
+	
+	//echo "$statement";
+	//echo "$numeroUno";
+
+        if ($this->right != null) 
 	{
 		$statement = '"';
+		$statement .= "$parent ";
         	$statement .= preg_replace("/\n/", '\n', $this->message());
 		$statement .= '"->';
+		//echo "$statement";
 		$DOTPrint [] = $statement;
-		$this->right->printDOT();
+		$next = $next + 1;
+		$this->right->printDOT($child,$next);
 	}
-        if ($this->wrong != null)
+	
+	if ($this->wrong != null) 
 	{
 		$statement = '"';
+		$statement .= "$parent ";
         	$statement .= preg_replace("/\n/", '\n', $this->message());
 		$statement .= '"->';
+		//echo "$statement";
 		$DOTPrint [] = $statement;
-		$this->wrong->printDOT();
+		$next = $next + 1;
+		$this->wrong->printDOT($child,$next);
 	}
 	return $DOTPrint;	
     }
-
+    
     public function printAllNodes()
     {
 	global $AllNodesPrint;
+	global $numeroUno;
+	global $flag;
 	$statement = '"';
+	if ($flag == 0)
+		{
+		$statement .= "0 ";
+		$flag = 1;
+		}
+	//$statement .= "$numeroUno ";
         $statement .= preg_replace("/\n/", '\n', $this->message());
 	$statement .= '";';
+	//echo "$statement";
 	$AllNodesPrint [] = $statement;
-        if ($this->right != null) $this->right->printAllNodes();
-        if ($this->wrong != null) $this->wrong->printAllNodes();
+        if ($this->right != null) 
+		 $this->right->printAllNodes();
+        if ($this->wrong != null)
+		 $this->wrong->printAllNodes();
+        //if (($this->wrong != null) && ($this->right != null))
+//	{	 $this->right->printAllNodes();
+		// $this->wrong->printAllNodes();
+//       }
+	
 	return $AllNodesPrint;
     }
 }
@@ -153,6 +190,7 @@ class GradeDecisionTreeInternal extends GradeDecisionTree
     // Generate and return the message that this tree node should display
     public function message()
     {
+	global $numeroUno;
         $total = count($this->students);
         $good = 0;
         $bad = 0;
@@ -235,7 +273,7 @@ function breakTree($tree, $qcutoff, $ncutoff)
         }
     }
  
-    if ($bestq == -1) return; // Don't split if we don't need to
+    //if ($bestq == -1) return; // Don't split if we don't need to
  
     $right = array();
     $wrong = array();

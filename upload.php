@@ -50,7 +50,7 @@ $uploaded_type = $_FILES['uploaded']['type'];
 
 //Error check if the document uploaded is indeed
 //a 2003 Excel Spreadsheet
-if (!($uploaded_type=="application/vnd.ms-excel"))
+/*if (!($uploaded_type=="application/vnd.ms-excel"))
 {
         echo "You may only upload XLS files.<br>";
         echo "Sorry your file was not uploaded.<br>";
@@ -58,7 +58,7 @@ if (!($uploaded_type=="application/vnd.ms-excel"))
         exit(1);
 }
 
-else{
+else*/{
         if(move_uploaded_file($_FILES['uploaded']['tmp_name'], $target))
         {       
                 echo "<h3>Results:</h3>";
@@ -156,8 +156,8 @@ $test = $stats->printAllNodes();
 
 //printDOT returns an array of dependence statments, i.e. node -> node to show
 //dependence. this is also required for DOT.
-$final = $stats->printDOT();
-
+$final = $stats->printDOT(0,1);
+//echo "$final";
 //Andres A.K.A BowlofRice edits begin below
 //Create a randomly namedDOT file in the saved_pngs directory //and check to make sure it can be opened
 $Timestamp=time();
@@ -174,13 +174,25 @@ fwrite($fh, $topStatement);
 //Loop through listing of all Nodes and write them to the DOT file
 for($g = 0; $g < sizeof($test); $g++)
 {
-	fwrite($fh, $test[$g]);
+	
+	
+	$blah = str_replace("They","$g They",$test[$g]);
+	#if ($g == 0)
+		#$blah = "0".$blah;
+	//$blah = str_replace(" /", "'\'", $blah);
+	//echo $blah;
+	//echo $test[$g];
+	//echo $g;
+	fwrite($fh, $blah);
 }
 
 
 //Loop through listing of all node dependencies and write them to the DOT file
 for($c = 0; $c < sizeof($final); $c++)
 {
+	//$blah2 = str_replace("They","$c They",$final[$c]);
+	//echo "$final[$c]";
+//	echo"$c";
 	fwrite($fh, $final[$c]);
 }
 
